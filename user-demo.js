@@ -35,11 +35,15 @@ app.post('/login', (req, res)=>{
     let {id, pwd} = req.body
 
     let user = db.get(id)
-    if (user.pwd == pwd){
-        res.json({message: `${user.nickName}님 환영합니다.`})
-    }else{
-        // 비번 틀림
-        res.status(401).json({message: '비밀번호를 다시 입력해주세요.'})
+    if (user){
+        if (user.pwd === pwd){
+            res.json({message: `${user.nickName}님 환영합니다.`})
+        } else {
+            // 비번 틀림
+            res.status(401).json({message: '비밀번호를 다시 입력해주세요.'})
+        }
+    } else {
+        res.status(404).json({message: '해당 id를 가진 데이터는 존재하지 않습니다.'})
     }
 })
 
